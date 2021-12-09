@@ -16,11 +16,11 @@
 
 
 Route::get('/', function () {
-    return view('auth.login');
+   return view('auth.login');
 });
 Route::get('/logout', function () {
-    Auth::logout();
-    return view('auth.login');
+   Auth::logout();
+   return view('auth.login');
 });
 
 Auth::routes();
@@ -28,19 +28,27 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/admin')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('dashboard', 'AdminPageController@index')->name('admin.dashboard');
+   Route::get('dashboard', 'AdminPageController@index')->name('admin.dashboard');
 });
 
 Route::prefix('/dosen')->middleware(['auth', 'dosen'])->group(function () {
-    Route::get('dashboard', 'DosenPageController@index')->name('dosen.dashboard');
+   Route::get('dashboard', 'DosenPageController@index')->name('dosen.dashboard');
 });
 
 Route::prefix('/mahasiswa')->middleware(['auth', 'mahasiswa'])->group(function () {
-    Route::get('dashboard', 'MahasiswaPageController@index')->name('mahasiswa.dashboard');
+   Route::get('dashboard', 'MahasiswaPageController@index')->name('mahasiswa.dashboard');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('surat-masuk', 'PageController@suratMasuk')->name('surat.masuk');
+   Route::get('surat-masuk', 'PageController@suratMasuk')->name('surat.masuk');
+   Route::get('buat-surat', 'PageController@buatSurat')->name('buat.surat');
+   Route::post('kirim-surat', 'PageController@kirimSurat')->name('kirim.surat');
+   Route::put('validasi-surat', 'PageController@validasiSurat')->name('validasi.surat')->middleware(['admin']);
+   Route::delete('hapus-surat', 'PageController@hapusSurat')->name('hapus.surat');
+   Route::post('edit-surat', 'PageController@editSurat')->name('edit.surat');
+   Route::post('update-surat', 'PageController@updateSurat')->name('update.surat');
+   Route::get('download/{surat}', 'PageController@download')->name('surat.download');
+   Route::get('surat-keluar', 'PageController@suratKeluar')->name('surat.keluar');
 });
 
 
@@ -72,5 +80,3 @@ Route::get('/user-edit/{id}', 'UserController@edit');
 // Route::get('/laporan/mingguan', 'LaporanController@minggu')->name('laporan.minggu');
 // Route::get('/laporan/bulanan', 'LaporanController@bulan')->name('laporan.bulan');
 // Route::get('/laporan/tahunan', 'LaporanController@tahun')->name('laporan.tahun');
-
-

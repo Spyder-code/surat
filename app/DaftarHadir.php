@@ -8,6 +8,7 @@ class DaftarHadir extends Model
 {
     protected $table = 'daftar_hadir';
     protected $fillable = [
-        'nama_peserta'
+        'nama_peserta',
+        'surat'
     ];
 }
