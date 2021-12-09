@@ -21,6 +21,9 @@ class Surat extends Model
         'keterangan',
         'file',
         'status',
+        'nama_ttd',
+        'nik_ttd',
+        'ttd_sebagai',
     ];
 
     public function user()

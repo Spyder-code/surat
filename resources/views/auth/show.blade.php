@@ -46,61 +46,60 @@ var check = function() {
                 <div class="col-12">
                   <div class="card">
                     <div class="card-body">
-                      <h4 class="card-title">Detail <b>{{$data->username}}</b></h4>
-                      
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ $data->name }}" required readonly>
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
+                      <h4 class="card-title">Account <b>{{$data->username}}</b></h4>
+                        <form action="">
+                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                <label for="name" class="col-md-4 control-label">Name</label>
+                                <div class="col-md-6">
+                                    <input id="nama" type="text" class="form-control" name="nama" value="{{ $data->nama }}" required readonly>
+                                    @if ($errors->has('nama'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('nama') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <label for="username" class="col-md-4 control-label">Username</label>
-                            <div class="col-md-6">
-                                <input id="username" type="text" class="form-control" name="username" value="{{ $data->username }}" required readonly="">
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
+                            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                                <label for="username" class="col-md-4 control-label">{{ Auth::user()->role_id!=3?'NIM':'NIK' }}</label>
+                                <div class="col-md-6">
+                                    <input id="username" type="text" class="form-control" name="username" value="{{ $data->username }}" required readonly="">
+                                    @if ($errors->has('username'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('username') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $data->email }}" required readonly>
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" name="email" value="{{ $data->email }}" required readonly>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email" class="col-md-4 control-label">Gambar</label>
-                            <div class="col-md-6">
-                                <img class="product" width="200" height="200" @if($data->gambar) src="{{ asset('images/user/'.$data->gambar) }}" @endif />
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <label for="email" class="col-md-4 control-label">Phone</label>
+                                <div class="col-md-6">
+                                    <input id="no_telp" type="text" class="form-control" name="no_telp" value="{{ $data->no_telp }}" required readonly>
+                                    @if ($errors->has('no_telp'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('no_telp') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        @if(Auth::user()->level == 'admin')
-                         <div class="form-group{{ $errors->has('level') ? ' has-error' : '' }}">
-                            <label for="level" class="col-md-4 control-label">Level</label>
-                            <div class="col-md-6">
-                            <select class="form-control" name="level" required="" readonly>
-                                <option value="admin" @if($data->level == 'admin') selected @endif>Admin</option>
-                                <option value="user" @if($data->level == 'user') selected @endif>User</option>
-                            </select>
+                            <div class="form-group">
+                                <label for="email" class="col-md-4 control-label">Gambar</label>
+                                <div class="col-md-6">
+                                    <img class="product" width="200" height="200" src="{{ $data->avatar }}" />
+                                </div>
                             </div>
-                        </div>
-                        @endif
-                        <a href="{{route('user.index')}}" class="btn btn-light pull-right">Back</a>
+                        </form>
+                        {{-- <a href="{{route('user.index')}}" class="btn btn-light pull-right">Back</a> --}}
                     </div>
                   </div>
                 </div>

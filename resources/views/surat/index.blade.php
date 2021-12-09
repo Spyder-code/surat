@@ -63,7 +63,7 @@ $(document).ready(function() {
                         <td>{{ $surat->user->nama}}</td>
                         <td>{{ $surat->jenis->nama}}</td>
                         <td>{{ $surat->perihal}}</td>
-                        <td>
+                        <td class="d-flex">
                            <div class="btn-group dropdown">
                               <button type="button" class="btn btn-success dropdown-toggle btn-sm"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -86,7 +86,7 @@ $(document).ready(function() {
                                        Delete
                                     </button>
                                  </form>
-                                 <form action="{{ route('validasi.surat') }}" class="pull-left" method="post">
+                                 {{-- <form action="{{ route('validasi.surat') }}" class="pull-left" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('put') }}
                                     <input type="hidden" name="idSurat" value="{{ $surat->id }}">
@@ -94,6 +94,43 @@ $(document).ready(function() {
                                        onclick="return confirm('Validasi {{ $surat->jenis->nama}} ini?')">
                                        Validasi
                                     </button>
+                                 </form> --}}
+                              </div>
+                           </div>
+                           <!-- Button trigger modal -->
+                           <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#surat-{{ $surat->id }}">
+                              Validasi
+                           </button>
+                           
+                           <!-- Modal -->
+                           <div class="modal fade" id="surat-{{ $surat->id }}" tabindex="-1" role="dialog" aria-labelledby="surat-{{ $surat->id }}Label" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                 <form action="{{ route('validasi.surat') }}" method="POST">
+                                    {{ csrf_field() }}
+                                    {{ method_field('put') }}
+                                    <input type="hidden" name="idSurat" value="{{ $surat->id }}">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="surat-{{ $surat->id }}Label">Validasi Surat</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                          </button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <div class="form-group">
+                                             <label>Nama penandatangan</label>
+                                             <input type="text" name="nama_ttd" class="form-control">
+                                          </div>
+                                          <div class="form-group">
+                                             <label>Sebagai</label>
+                                             <input type="text" name="ttd_sebagai" class="form-control">
+                                          </div>
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?')">Validasi</button>
+                                       </div>
+                                    </div>
                                  </form>
                               </div>
                            </div>

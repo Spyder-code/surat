@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
    Route::post('update-surat', 'PageController@updateSurat')->name('update.surat');
    Route::get('download/{surat}', 'PageController@download')->name('surat.download');
    Route::get('surat-keluar', 'PageController@suratKeluar')->name('surat.keluar');
+   Route::get('profile', 'PageController@profile')->name('user.profile');
 });
 
 

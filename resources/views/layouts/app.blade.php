@@ -135,7 +135,7 @@
                   </a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link {{ setActive(['buku*']) }}" href="">
+                  <a class="nav-link {{ setActive(['user.profile']) }}" href="{{ route('user.profile') }}">
                      <i class="menu-icon mdi mdi-account"></i>
                      <span class="menu-title">Profile</span>
                   </a>

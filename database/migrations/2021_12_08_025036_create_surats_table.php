@@ -16,6 +16,9 @@ class CreateSuratsTable extends Migration
         Schema::create('surat', function (Blueprint $table) {
             $table->increments('id');
             $table->string('no_surat')->nullable();
+            $table->string('nama_ttd')->nullable();
+            $table->string('ttd_sebagai')->nullable();
+            $table->string('nik_ttd')->nullable();
             $table->integer('pemohon')->unsigned();
             $table->integer('tipe_surat')->unsigned();
             $table->foreign('pemohon')->references('id')->on('users');
@@ -26,8 +29,8 @@ class CreateSuratsTable extends Migration
             $table->string('alamat_mitra')->nullable();
             $table->string('nama_kegiatan')->nullable();
             $table->string('lokasi_kegiatan')->nullable();
-            $table->date('tgl_pelaksanaan_kegiatan')->nullable();
-            $table->string('keterangan')->nullable();
+            $table->dateTime('tgl_pelaksanaan_kegiatan')->nullable();
+            $table->text('keterangan')->nullable();
             $table->string('file')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();

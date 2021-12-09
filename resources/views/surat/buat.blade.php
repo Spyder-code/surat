@@ -27,11 +27,12 @@
             </div>
             <div>
                <select class="form-control" id="opsiSurat">
+                  <option></option>
                   @foreach ($tipeSurat as $ts)
                   @if (auth()->user()->role->nama == 'Admin')
                   <option value="{{ $ts->id }}">{{ $ts->nama }}</option>
                   @elseif (auth()->user()->role->nama == 'Mahasiswa')
-                  @if ($ts->id == 1 || $ts->id == 2 || $ts->id == 3 || $ts->id == 5)
+                  @if ( $ts->id == 2 || $ts->id == 3 || $ts->id == 5)
                   <option value="{{ $ts->id }}">{{ $ts->nama }}</option>
                   @endif
                   @else
@@ -43,7 +44,7 @@
                </select>
             </div>
             <div class="mt-5">
-               <form action="{{ route('kirim.surat') }}" method="POST" id="formPersonal">
+               <form action="{{ route('kirim.surat') }}" method="POST" id="formPersonal" style="display: none;">
                   {{ csrf_field() }}
                   <input type="hidden" name="idSurat" value="1">
                   <div class="form-group row">
@@ -104,6 +105,21 @@
                   </div>
                   <div class="form-group row">
                      <div class="col">
+                        <label for="namakegiatan">Nama Kegiatan</label>
+                        <input type="text" class="form-control" name="nama_kegiatan" id="namakegiatan" placeholder="Nama Mitra" required>
+                     </div>
+                     <div class="col">
+                        <label for="lokasi">Lokasi Kegiatan</label>
+                        <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan"
+                           required>
+                     </div>
+                     <div class="col">
+                        <label for="tanggal">Tanggal Pelaksanaan</label>
+                        <input type="datetime-local" class="form-control" name="tanggal" id="tanggal" required>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col">
                         <label for="keterangan">Keterangan</label>
                         <textarea class="form-control" name="keterangan" id="keterangan" rows="4" required></textarea>
                      </div>
@@ -111,7 +127,7 @@
                   <button type="submit" class="btn btn-primary">Submit</button>
                </form>
 
-               <!-- BELUM -->
+               <!-- SUDAH -->
                <form action="{{ route('kirim.surat') }}" method="POST" id="formDaftar" style="display: none;">
                   {{ csrf_field() }}
                   <input type="hidden" name="idSurat" value="3">
@@ -136,7 +152,7 @@
                      </div>
                      <div class="col">
                         <label for="tanggal">Tanggal Pelaksanaan Kegiatan</label>
-                        <input type="date" class="form-control" name="tgl_pelaksanaan_kegiatan" id="tanggal" required>
+                        <input type="datetime-local" class="form-control" name="tgl_pelaksanaan_kegiatan" id="tanggal" required>
                      </div>
                   </div>
                   <div class="form-group row">
@@ -156,7 +172,7 @@
                   <button id="addPeserta" class="btn btn-success btn-sm" type="button">Tambah Nama Peserta</button>
                   <button type="submit" class="btn btn-primary">Submit</button>
                </form>
-               <!-- BELUM -->
+               <!-- SUDAH -->
 
                <form action="{{ route('kirim.surat') }}" method="POST" id="formSurat" style="display: none;">
                   {{ csrf_field() }}
@@ -180,7 +196,7 @@
                      </div>
                      <div class="col">
                         <label for="tanggal">Tanggal Pelaksanaan Kegiatan</label>
-                        <input type="date" class="form-control" name="tanggal" id="tanggal" required>
+                        <input type="datetime-local" class="form-control" name="tanggal" id="tanggal" required>
                      </div>
                   </div>
                   <div class="form-group row">
@@ -222,7 +238,7 @@
                      </div>
                      <div class="col">
                         <label for="tanggal">Tanggal Pelaksanaan</label>
-                        <input type="date" class="form-control" name="tanggal" id="tanggal" required>
+                        <input type="datetime-local" class="form-control" name="tanggal" id="tanggal" required>
                      </div>
                   </div>
                   <div class="form-group row">

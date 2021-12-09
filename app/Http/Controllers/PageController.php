@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\DaftarHadir;
 use App\Surat;
 use App\SuratType;
+use App\User;
 use Barryvdh\DomPDF\PDF;
 use Barryvdh\DomPDF\Facade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PageController extends Controller
 {
@@ -51,6 +53,9 @@ class PageController extends Controller
                'tujuan' => 'required|max:255',
                'nama'  => 'required|max:255',
                'alamat'  => 'required|max:255',
+               'nama_kegiatan'  => 'required|max:255',
+               'lokasi'  => 'required|max:255',
+               'tanggal'  => 'required|date',
                'keterangan'  => 'required|max:255',
             ]);
             $surat = new Surat();
@@ -60,6 +65,9 @@ class PageController extends Controller
             $surat->tujuan = $request->tujuan;
             $surat->nama_mitra = $request->nama;
             $surat->alamat_mitra = $request->alamat;
+            $surat->nama_kegiatan = $request->nama_kegiatan;
+            $surat->lokasi_kegiatan = $request->lokasi;
+            $surat->tgl_pelaksanaan_kegiatan = $request->tanggal;
             $surat->keterangan = $request->keterangan;
             $surat->save();
             return back()->with('message', 'Surat Kegiatan Mahasiswa Berhasil Dikirim');
@@ -135,7 +143,11 @@ class PageController extends Controller
          'idSurat'   => 'required',
       ]);
       $no = Surat::all()->where('tipe_surat', $request->idSurat)->where('status', 1)->count();
-      Surat::find($request->idSurat)->update(['status' => 1, 'no_surat' => $no.'/C/FTI/'.date('Y')]);
+      Surat::find($request->idSurat)->update([
+         'ttd_sebagai' => $request->ttd_sebagai,
+         'nama_ttd' => $request->nama_ttd,
+      ]);
+      Surat::find($request->idSurat)->update(['status' => 1, 'no_surat' => ($no+1).'/C/FTI/'.date('Y')]);
       return back()->with('message', 'Surat Berhasil Divalidasi');
    }
    
@@ -154,7 +166,10 @@ class PageController extends Controller
          'idSurat'   => 'required',
       ]);
       $surat = Surat::find($request->idSurat);
-      return view('surat.edit_baru', compact('surat'));
+      $daftarHadir = DaftarHadir::where('surat', $request->idSurat)->get();
+      $url = str_replace(url('/'), '', url()->previous()); // /surat-keluar
+      session()->put('url', $url);
+      return view('surat.edit_baru', compact('surat', 'daftarHadir'));
    }
    
    public function updateSurat(Request $request)
@@ -175,13 +190,16 @@ class PageController extends Controller
             $surat->alamat_mitra = $request->alamat;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return redirect('/surat-masuk')->with('message', 'Surat Personalia & SK Berhasil Diperbarui');
+            return redirect(Session::get('url')=='/surat-keluar'?'/surat-keluar':'/surat-masuk')->with('message', 'Surat Personalia & SK Berhasil Diperbarui');
          case '2':
             $request->validate([
                'perihal'   => 'required|max:255',
                'tujuan' => 'required|max:255',
                'nama'  => 'required|max:255',
                'alamat'  => 'required|max:255',
+               'nama_kegiatan'  => 'required|max:255',
+               'lokasi'  => 'required|max:255',
+               'tanggal'  => 'required|date',
                'keterangan'  => 'required|max:255',
             ]);
             $surat = Surat::find($request->idSurat);
@@ -189,12 +207,31 @@ class PageController extends Controller
             $surat->tujuan = $request->tujuan;
             $surat->nama_mitra = $request->nama;
             $surat->alamat_mitra = $request->alamat;
+            $surat->nama_kegiatan = $request->nama_kegiatan;
+            $surat->lokasi_kegiatan = $request->lokasi;
+            $surat->tgl_pelaksanaan_kegiatan = $request->tanggal;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return redirect('/surat-masuk')->with('message', 'Surat Kegiatan Mahasiswa Berhasil Diperbarui');
+            return redirect(Session::get('url'))->with('message', 'Surat Kegiatan Mahasiswa Berhasil Diperbarui');
          case '3':
-            # code...
-            break;
+            $validate = $request->validate([
+               'perihal'   => 'required|max:255',
+               'nama_kegiatan' => 'required|max:255',
+               'lokasi_kegiatan'  => 'required|max:255',
+               'tgl_pelaksanaan_kegiatan'  => 'required|date',
+               'nama_mitra'  => 'required|max:255',
+               'tipe_surat'  => 'required',
+            ]);
+            $validate['no_surat'] = 'invalid';
+            $validate['pemohon'] =  Auth::id();
+            $surat = Surat::create($validate);
+            foreach ($request->anggota as $item) {
+               DaftarHadir::create([
+                  'surat' => $surat->id,
+                  'nama_peserta' => $item,
+               ]);
+            }
+            return back()->with('message', 'Surat Undangan/Daftar Hadir Kegiatan Berhasil Dikirim');
          case '4':
             $request->validate([
                'perihal'   => 'required|max:255',
@@ -212,7 +249,7 @@ class PageController extends Controller
             $surat->nama_mitra = $request->namamitra;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return redirect('/surat-masuk')->with('message', 'Surat Tugas Berhasil Diperbarui');
+            return redirect(Session::get('url'))->with('message', 'Surat Tugas Berhasil Diperbarui');
          case '5':
             $request->validate([
                'perihal'   => 'required|max:255',
@@ -231,16 +268,27 @@ class PageController extends Controller
             $surat->alamat_mitra = $request->alamat;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return redirect('/surat-masuk')->with('message', 'Surat Berita Acara Berhasil Diperbarui');
+            return redirect(Session::get('url'))->with('message', 'Surat Berita Acara Berhasil Diperbarui');
          default:
-            return redirect('/surat-masuk')->with('message', 'Pastikan Data Terinput Dengan Benar');
+            return redirect(Session::get('url'))->with('message', 'Pastikan Data Terinput Dengan Benar');
       }
    }
    
    public function download(Surat $surat)
    {
-      $pdf = Facade::loadView('pdf.surat', compact('surat'));
-      return $pdf->download('surat.pdf');
+      if($surat->tipe_surat==1){
+         $pdf = Facade::loadView('pdf.personalia', compact('surat'));
+      }else if($surat->tipe_surat==2){
+         $pdf = Facade::loadView('pdf.surat_kegiatan', compact('surat'));
+      }else if($surat->tipe_surat==3){
+         $anggota = DaftarHadir::all()->where('surat',$surat->id);
+         $pdf = Facade::loadView('pdf.daftar_hadir', compact('surat','anggota'));
+      }else if($surat->tipe_surat==4){
+         $pdf = Facade::loadView('pdf.surat_tugas', compact('surat'));
+      }else if($surat->tipe_surat==5){
+         $pdf = Facade::loadView('pdf.berita_acara', compact('surat'));
+      }
+      return $pdf->download($surat->jenis->nama.'.pdf');
    }
 
    public function suratKeluar()
@@ -249,6 +297,11 @@ class PageController extends Controller
       return view('surat.keluar', compact('surat'));
    }
 
+   public function profile()
+   {
+      $data = User::find(Auth::id());
+      return view('auth.show', compact('data'));
+   }
 
 
 }
