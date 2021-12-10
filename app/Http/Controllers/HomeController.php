@@ -28,11 +28,11 @@ class HomeController extends Controller
     {
         $role_id = Auth::user()->role_id;
         if ($role_id==1) {
-            return redirect(route('admin.dashboard'));
+            return redirect(route('user.dashboard'));
         } else if($role_id == 2) {
-            return redirect(route('dosen.dashboard'));
+            return redirect(route('user.dashboard'));
         }else{
-            return redirect(route('mahasiswa.dashboard'));
+            return redirect(route('user.dashboard'));
         }
         
     }

@@ -8,6 +8,7 @@ class SuratType extends Model
 {
     protected $table = 'tipe_surat';
     protected $fillable = [
-        'nama'
+        'nama',
+        'kode',
     ];
 }

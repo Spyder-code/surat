@@ -42,28 +42,32 @@ $(document).ready(function() {
             </div>
             <div class="table-responsive">
                <table class="table table-striped wrapper" id="table">
-                  @if (auth()->user()->role->nama == 'Admin')
                   <thead>
-                     <!-- admin -->
+                     <!-- mahasiswa -->
                      <tr>
                         <th>No.</th>
-                        <th>Tanggal</th>
+                        @if (Auth::user()->role_id==1)
                         <th>Pemohon</th>
+                        @endif
+                        <th>Tanggal</th>
                         <th>Jenis Surat</th>
                         <th>Kepentingan Surat</th>
+                        <th>Status</th>
                         <th>Action</th>
                      </tr>
                   </thead>
                   <tbody>
                      @foreach($surat as $surat)
-                     @if ($surat->status == 0)
                      <tr>
                         <td>{{ $loop->iteration }}</td>
+                        @if (Auth::user()->role_id==1)
+                        <td>{{ $surat->user->nama }}</td>
+                        @endif
                         <td>{{ date('d/m/Y', strtotime($surat->created_at)) }}</td>
-                        <td>{{ $surat->user->nama}}</td>
-                        <td>{{ $surat->jenis->nama}}</td>
-                        <td>{{ $surat->perihal}}</td>
-                        <td class="d-flex">
+                        <td>{{ $surat->jenis->nama }}</td>
+                        <td>{{ $surat->perihal }}</td>
+                        <td class="alert {{ $surat->status==0?'alert-warning':'alert-success' }}"><strong>{{ $surat->status==0?'Menunggu Validasi':'Sudah divalidasi' }}</strong></td>
+                        <td>
                            <div class="btn-group dropdown">
                               <button type="button" class="btn btn-success dropdown-toggle btn-sm"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,7 +75,10 @@ $(document).ready(function() {
                               </button>
                               <div class="dropdown-menu" x-placement="bottom-start"
                                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 30px, 0px);">
-                                 <a class="dropdown-item" href="">Download surat</a>
+                                 @if ($surat->status==1)
+                                    <a class="dropdown-item" href="{{ route('surat.download', $surat) }}"> Download surat
+                                 </a>
+                                 @endif
                                  <form action="{{ route('edit.surat') }}" class="pull-left" method="post">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="idSurat" value="{{ $surat->id }}">
@@ -86,18 +93,9 @@ $(document).ready(function() {
                                        Delete
                                     </button>
                                  </form>
-                                 {{-- <form action="{{ route('validasi.surat') }}" class="pull-left" method="post">
-                                    {{ csrf_field() }}
-                                    {{ method_field('put') }}
-                                    <input type="hidden" name="idSurat" value="{{ $surat->id }}">
-                                    <button class="dropdown-item" style="cursor: pointer;"
-                                       onclick="return confirm('Validasi {{ $surat->jenis->nama}} ini?')">
-                                       Validasi
-                                    </button>
-                                 </form> --}}
                               </div>
                            </div>
-                           <!-- Button trigger modal -->
+                           @if (Auth::user()->role_id==1)
                            <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#surat-{{ $surat->id }}">
                               Validasi
                            </button>
@@ -134,116 +132,11 @@ $(document).ready(function() {
                                  </form>
                               </div>
                            </div>
+                           @endif
                         </td>
                      </tr>
-                     @endif
                      @endforeach
                   </tbody>
-                  @elseif (auth()->user()->role->nama == 'Dosen')
-                  <thead>
-                     <!-- dosen -->
-                     <tr>
-                        <th>No.</th>
-                        <th>Tanggal</th>
-                        <th>Jenis Surat</th>
-                        <th>Kepentingan Surat</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @foreach($surat as $surat)
-                     @if ($surat->status == 1 && $surat->pemohon == 2)
-                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ date('d/m/Y', strtotime($surat->created_at)) }}</td>
-                        <td>{{ $surat->jenis->nama }}</td>
-                        <td>{{ $surat->perihal }}</td>
-                        <td>Sudah divalidasi</td>
-                        <td>
-                           <div class="btn-group dropdown">
-                              <button type="button" class="btn btn-success dropdown-toggle btn-sm"
-                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 Action
-                              </button>
-                              <div class="dropdown-menu" x-placement="bottom-start"
-                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 30px, 0px);">
-                                 <a class="dropdown-item" href=""> Download surat </a>
-                                 <form action="{{ route('edit.surat') }}" class="pull-left" method="post">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="idSurat" value="{{ $surat->id }}">
-                                    <button class="dropdown-item" style="cursor: pointer;">Edit</button>
-                                 </form>
-                                 <form action="{{ route('hapus.surat') }}" class="pull-left" method="post">
-                                    {{ csrf_field() }}
-                                    {{ method_field('delete') }}
-                                    <input type="hidden" name="idSurat" value="{{ $surat->id }}">
-                                    <button class="dropdown-item" style="cursor: pointer;"
-                                       onclick="return confirm('Anda yakin ingin menghapus {{ $surat->jenis->nama}} ini?')">
-                                       Delete
-                                    </button>
-                                 </form>
-                              </div>
-                           </div>
-                        </td>
-                     </tr>
-                     @endif
-                     @endforeach
-                  </tbody>
-                  @else
-                  <thead>
-                     <!-- mahasiswa -->
-                     <tr>
-                        <th>No.</th>
-                        <th>Tanggal</th>
-                        <th>Jenis Surat</th>
-                        <th>Kepentingan Surat</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @foreach($surat as $surat)
-                     @if ($surat->status == 1 && $surat->pemohon == 3)
-                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ date('d/m/Y', strtotime($surat->created_at)) }}</td>
-                        <td>{{ $surat->jenis->nama }}</td>
-                        <td>{{ $surat->perihal }}</td>
-                        <td>Sudah divalidasi</td>
-                        <td>
-                           <div class="btn-group dropdown">
-                              <button type="button" class="btn btn-success dropdown-toggle btn-sm"
-                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 Action
-                              </button>
-                              <div class="dropdown-menu" x-placement="bottom-start"
-                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 30px, 0px);">
-                                 <a class="dropdown-item" href="{{ route('surat.download', $surat) }}"> Download surat
-                                 </a>
-                                 <form action="{{ route('edit.surat') }}" class="pull-left" method="post">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="idSurat" value="{{ $surat->id }}">
-                                    <button class="dropdown-item" style="cursor: pointer;">Edit</button>
-                                 </form>
-                                 <form action="{{ route('hapus.surat') }}" class="pull-left" method="post">
-                                    {{ csrf_field() }}
-                                    {{ method_field('delete') }}
-                                    <input type="hidden" name="idSurat" value="{{ $surat->id }}">
-                                    <button class="dropdown-item" style="cursor: pointer;"
-                                       onclick="return confirm('Anda yakin ingin menghapus {{ $surat->jenis->nama}} ini?')">
-                                       Delete
-                                    </button>
-                                 </form>
-                              </div>
-                           </div>
-                        </td>
-                     </tr>
-                     @endif
-                     @endforeach
-                  </tbody>
-                  @endif
-
                </table>
             </div>
          </div>

@@ -15,7 +15,7 @@
             <tr>
                 <td>Nama</td>
                 <td>:</td>
-                <td>{{ $surat->user->name }}</td>
+                <td>{{ $surat->user->nama }}</td>
             </tr>
             <tr>
                 <td>NIK</td>
@@ -23,7 +23,7 @@
                 <td>{{ $surat->user->username }}</td>
             </tr>
         </table>
-        <p style="text-align: justify;">Untuk bertugas sebagai narasumber dalam pembekalan Alumni Evangelisasi pribadi Surabaya, yang diselenggarakan pada:</p>
+        <p style="text-align: justify;">Untuk bertugas sebagai {{ $surat->perihal }}, yang diselenggarakan pada:</p>
         <table style="border: none; margin: 0 auto; width: 50%;">
             <tr>
                 <td>Hari/tanggal</td>

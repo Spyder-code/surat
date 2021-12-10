@@ -92,12 +92,6 @@ var check = function() {
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email" class="col-md-4 control-label">Gambar</label>
-                                <div class="col-md-6">
-                                    <img class="product" width="200" height="200" src="{{ $data->avatar }}" />
-                                </div>
-                            </div>
                         </form>
                         {{-- <a href="{{route('user.index')}}" class="btn btn-light pull-right">Back</a> --}}
                     </div>

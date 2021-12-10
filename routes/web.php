@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 Route::get('/logout', function () {
    Auth::logout();
-   return view('auth.login');
+   return redirect('/');
 });
 
 Auth::routes();
@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
    Route::get('download/{surat}', 'PageController@download')->name('surat.download');
    Route::get('surat-keluar', 'PageController@suratKeluar')->name('surat.keluar');
    Route::get('profile', 'PageController@profile')->name('user.profile');
+   Route::get('dashboard', 'PageController@dashboard')->name('user.dashboard');
 });
 
 

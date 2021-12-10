@@ -35,4 +35,9 @@ class Surat extends Model
     {
         return $this->belongsTo(SuratType::class,'tipe_surat');
     }
+
+    public function jum($id)
+    {
+        return Surat::all()->where('tipe_surat',$id)->count();
+    }
 }

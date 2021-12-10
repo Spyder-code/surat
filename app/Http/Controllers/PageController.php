@@ -16,7 +16,12 @@ class PageController extends Controller
 {
    public function suratMasuk()
    {
-      $surat = Surat::all();
+      if (Auth::user()->role_id==1) {
+         $surat = Surat::all()->where('status',0);
+      } else {
+         $surat = Surat::all()->where('pemohon',Auth::id());
+      }
+      
       return view('surat.index', compact('surat'));
    }
 
@@ -46,7 +51,7 @@ class PageController extends Controller
             $surat->alamat_mitra = $request->alamat;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return back()->with('message', 'Surat Personalia & SK Berhasil Dikirim');
+            return redirect('surat-masuk')->with('message', 'Surat Personalia & SK Berhasil Dikirim');
          case '2':
             $request->validate([
                'perihal'   => 'required|max:255',
@@ -70,7 +75,7 @@ class PageController extends Controller
             $surat->tgl_pelaksanaan_kegiatan = $request->tanggal;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return back()->with('message', 'Surat Kegiatan Mahasiswa Berhasil Dikirim');
+            return redirect('surat-masuk')->with('message', 'Surat Kegiatan Mahasiswa Berhasil Dikirim');
          case '3':
             $validate = $request->validate([
                'perihal'   => 'required|max:255',
@@ -89,7 +94,7 @@ class PageController extends Controller
                   'nama_peserta' => $item,
                ]);
             }
-            return back()->with('message', 'Surat Undangan/Daftar Hadir Kegiatan Berhasil Dikirim');
+            return redirect('surat-masuk')->with('message', 'Surat Undangan/Daftar Hadir Kegiatan Berhasil Dikirim');
          case '4':
             $request->validate([
                'perihal'   => 'required|max:255',
@@ -109,7 +114,7 @@ class PageController extends Controller
             $surat->nama_mitra = $request->namamitra;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return back()->with('message', 'Surat Tugas Berhasil Dikirim');
+            return redirect('surat-masuk')->with('message', 'Surat Tugas Berhasil Dikirim');
          case '5':
             $request->validate([
                'perihal'   => 'required|max:255',
@@ -131,9 +136,9 @@ class PageController extends Controller
             $surat->alamat_mitra = $request->alamat;
             $surat->keterangan = $request->keterangan;
             $surat->save();
-            return back()->with('message', 'Surat Berita Acara Berhasil Dikirim');
+            return redirect('surat-masuk')->with('message', 'Surat Berita Acara Berhasil Dikirim');
          default:
-            return back()->with('message', 'Pastikan Data Terinput Dengan Benar');
+            return redirect('surat-masuk')->with('message', 'Pastikan Data Terinput Dengan Benar');
       }
    }
 
@@ -147,7 +152,8 @@ class PageController extends Controller
          'ttd_sebagai' => $request->ttd_sebagai,
          'nama_ttd' => $request->nama_ttd,
       ]);
-      Surat::find($request->idSurat)->update(['status' => 1, 'no_surat' => ($no+1).'/C/FTI/'.date('Y')]);
+      $surat = Surat::find($request->idSurat);
+      Surat::find($request->idSurat)->update(['status' => 1, 'no_surat' => ($no+1).'/'.$surat->jenis->kode.'/FTI/'.date('Y')]);
       return back()->with('message', 'Surat Berhasil Divalidasi');
    }
    
@@ -303,5 +309,18 @@ class PageController extends Controller
       return view('auth.show', compact('data'));
    }
 
+   public function dashboard()
+   {
+      if (Auth::user()->role_id==1) {
+         $surat = Surat::all()->where('status',0);
+         $count = Surat::all()->count();
+         $sur = Surat::all();
+      } else {
+         $surat = Surat::all()->where('pemohon',Auth::id())->where('status',0);
+         $count = Surat::all()->where('pemohon',Auth::id())->count();
+         $sur = null;
+      }
+      return view('dashboar', compact('surat','count','sur'));
+   }
 
 }

@@ -18,11 +18,11 @@
         <p style="text-align: center;">Yogyakarta, {{ date('d F Y', strtotime($surat->updated_at)) }}</p>
         <p style="text-align: center;">Mengetahui</p>
         <div style="display: flex; justify-content: space-between;">
-            <div style="text-align: center;">
+            <div style="text-align:left">
                 <p>{{ $surat->ttd_sebagai }}</p><br><br><br>
                 <p>({{ $surat->nama_ttd }})</p>
             </div>
-            <div style="text-align: center;">
+            <div style="text-align:right">
                 <p>Perwakilan Mitra</p><br><br><br>
                 <p>({{ $surat->nama_mitra }})</p>
             </div>

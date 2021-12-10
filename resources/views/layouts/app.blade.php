@@ -5,7 +5,7 @@
    <!-- Required meta tags -->
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title>ARSIP - DISKOMINFO</title>
+   <title>Sistem Surat Menyurat FTI</title>
    <!-- plugins:css -->
    <link rel="stylesheet" href="{{asset('vendors/iconfonts/mdi/css/materialdesignicons.min.css')}}">
    <link rel="stylesheet" href="{{asset('vendors/css/vendor.bundle.base.css')}}">
@@ -31,7 +31,7 @@
       <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
          <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
             <a class="navbar-brand brand-logo" href="index.html" style="color: #2d2d2d">
-               LAPORAN - ARSIP
+               Surat
             </a>
             <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                data-toggle="offcanvas">
@@ -77,7 +77,7 @@
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
          <!-- partial:partials/_sidebar.html -->
-         <nav class="sidebar sidebar-offcanvas" id="sidebar">
+         <nav class="sidebar sidebar-offcanvas fixed" id="sidebar">
             <ul class="nav">
                <li class="nav-item nav-profile">
                   <div class="nav-link">
@@ -102,9 +102,9 @@
                      </div>
                   </div>
                </li>
-               <li class="nav-item {{ setActive(['/', 'home']) }}">
-                  <a class="nav-link" href="{{url('/')}}">
-                     <i class="menu-icon mdi mdi-television"></i>
+               <li class="nav-item {{ setActive(['dashboard']) }}">
+                  <a class="nav-link" href="{{ route('user.dashboard') }}">
+                     <i class="menu-icon mdi mdi-bank"></i>
                      <span class="menu-title">Dashboard</span>
                   </a>
                </li>
@@ -114,30 +114,30 @@
                      <span class="menu-title">Surat masuk</span>
                   </a>
                </li>
+               <li class="nav-item">
+                  <a class="nav-link {{ setActive(['buat.surat']) }}" href="{{ route('buat.surat') }}">
+                     <i class="menu-icon mdi mdi-book"></i>
+                     <span class="menu-title">Buat surat</span>
+                  </a>
+               </li>
                @if (Auth::user()->role_id==1)
                <li class="nav-item">
-                  <a class="nav-link {{ setActive(['buku*']) }}" href="{{ route('surat.keluar') }}">
-                     <i class="menu-icon mdi mdi-inbox"></i>
+                  <a class="nav-link {{ setActive(['surat.keluar']) }}" href="{{ route('surat.keluar') }}">
+                     <i class="menu-icon mdi mdi-table"></i>
                      <span class="menu-title">Surat keluar</span>
                   </a>
                </li>
                @endif
                <li class="nav-item">
-                  <a class="nav-link {{ setActive(['buku*']) }}" href="{{ route('buat.surat') }}">
-                     <i class="menu-icon mdi mdi-book"></i>
-                     <span class="menu-title">Buat surat</span>
-                  </a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link {{ setActive(['buku*']) }}" href="">
-                     <i class="menu-icon mdi mdi-table"></i>
-                     <span class="menu-title">Arsip</span>
-                  </a>
-               </li>
-               <li class="nav-item">
                   <a class="nav-link {{ setActive(['user.profile']) }}" href="{{ route('user.profile') }}">
                      <i class="menu-icon mdi mdi-account"></i>
                      <span class="menu-title">Profile</span>
+                  </a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="{{ url('logout') }}">
+                     <i class="menu-icon mdi mdi-logout"></i>
+                     <span class="menu-title">Logout</span>
                   </a>
                </li>
             </ul>
@@ -150,8 +150,7 @@
             <footer class="footer">
                <div class="container-fluid clearfix">
                   <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © {{date('Y')}}
-                     <a href="https://diskominfo.mojokertokab.go.id/" target="_blank">DISKOMINFO KABUPATEN
-                        MOJOKERTO</a>. All rights reserved.</span>
+                     <a href="https://www.ukdw.ac.id/" target="_blank"> Sistem Surat Menyurat FTI</a>. All rights reserved.</span>
                </div>
             </footer>
             <!-- partial -->

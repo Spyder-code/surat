@@ -16,6 +16,7 @@ class CreateSuratTypesTable extends Migration
         Schema::create('tipe_surat', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nama');
+            $table->string('kode');
             $table->timestamps();
         });
     }

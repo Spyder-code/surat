@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>ARSIP - LOGIN</title>
+  <title>Sistem Surat Menyurat FTI</title>
 
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{asset('vendors/iconfonts/mdi/css/materialdesignicons.min.css')}}">
@@ -26,13 +26,13 @@
       <div class="content-wrapper d-flex align-items-center auth theme-one">
         <div class="row w-100">
         <div class="col-lg mx-auto d-flex">
-          <img src="{{ asset('images/bssn.png') }}" class="img-fluid">
+          <img src="{{ asset('images/fti.png') }}" class="img-fluid">
         </div>
         <div class="col-lg my-auto">
-          <h2>LAPORAN ARSIP SURAT MASUK</h2>
+          <h2> Sistem Surat Menyurat</h2>
             <div class="auto-form-wrapper" style="width: 500px">
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                  <label class="label">Username</label>
+                  <label class="label">NIM/NIK/Email</label>
                   <div class="input-group">
                     <input id="email" type="text" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
                     <div class="input-group-append">
@@ -67,7 +67,7 @@
                   <button class="btn btn-primary submit-btn btn-block" type="submit">Login</button>
                 </div>
             </div>
-            <p class="footer-text" style="margin-top: 20px;color: #308ee0">Copyright © {{date('Y')}} Diskominfo Kabupaten Mojokerto</p>
+            <p class="footer-text" style="margin-top: 20px;color: #308ee0">Copyright © {{date('Y')}} Sistem Surat Menyurat Fakultas Teknologi Informasi Universitas Kristen Duta Wacana</p>
           </div>
         </div>
       </div>

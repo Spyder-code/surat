@@ -13,11 +13,11 @@ class SuratTypeSeeder extends Seeder
     public function run()
     {
         SuratType::insert([
-            ['nama'=>'Surat Personalia & SK'],
-            ['nama'=>'Surat Kegiatan Mahasiswa'],
-            ['nama'=>'Surat Undagan/Daftar Hadir Kegiatan'],
-            ['nama'=>'Surat Tugas'],
-            ['nama'=>'Surat Berita Acara'],
+            ['nama'=>'Surat Personalia & SK', 'kode'=>'A'],
+            ['nama'=>'Surat Kegiatan Mahasiswa', 'kode'=>'B'],
+            ['nama'=>'Surat Undagan/Daftar Hadir Kegiatan', 'kode'=>'C'],
+            ['nama'=>'Surat Tugas', 'kode'=>'D'],
+            ['nama'=>'Surat Berita Acara', 'kode'=>'E'],
         ]);
     }
 }
